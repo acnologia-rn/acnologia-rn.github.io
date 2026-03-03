@@ -18,8 +18,8 @@
     "cat": "social"
   },
   {
-    "label": "vmfunc.re",
-    "url": "https://vmfunc.re/",
+    "label": "no entries here yet(friends don't have pages)",
+    "url": "",
     "icon": "💻",
     "cat": "friends"
   },
@@ -27,12 +27,6 @@
     "label": "nullpt.rs",
     "url": "https://nullpt.rs/",
     "icon": "🔮",
-    "cat": "friends"
-  },
-  {
-    "label": "ud2.rip",
-    "url": "https://ud2.rip/",
-    "icon": "⚡",
     "cat": "friends"
   },
   {
