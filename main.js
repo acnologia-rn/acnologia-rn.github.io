@@ -76,14 +76,30 @@ function initTypewriter() {
 function initCounter() {
   const el = document.getElementById('visitor-count');
   if (!el) return;
-  let count = 1337;
+  // Initial optimistic load from localStorage
+  let localCount = 1337;
   try {
-    count = parseInt(localStorage.getItem('acn-visitors') || '1337', 10);
-    count++;
-    localStorage.setItem('acn-visitors', count);
+    localCount = parseInt(localStorage.getItem('acn-visitors') || '1337', 10);
   } catch (_) { }
-  const str = String(count).padStart(7, '0');
-  el.innerHTML = str.split('').map(d => `<span class="digit">${d}</span>`).join('');
+
+  function render(val) {
+    const str = String(val).padStart(7, '0');
+    el.innerHTML = str.split('').map(d => `<span class="digit">${d}</span>`).join('');
+  }
+
+  render(localCount);
+
+  // Fetch worldwide count and update
+  fetch('https://api.counterapi.dev/v1/acnologia/visitors/up')
+    .then(res => res.json())
+    .then(data => {
+      if (data && typeof data.count === 'number') {
+        const globalCount = data.count + 1337; // preserve legacy base
+        render(globalCount);
+        try { localStorage.setItem('acn-visitors', globalCount); } catch (_) { }
+      }
+    })
+    .catch(e => console.error('Counter API error:', e));
 }
 
 /* ─── Glitch Hover Setup ─────────────────────────────── */
@@ -605,11 +621,14 @@ function initFileViewer() {
    ═══════════════════════════════════════════════════════ */
 function initDesktopIcons() {
   if (document.getElementById('desktop-dock')) return; // already injected
+  const inGamesDir = window.location.pathname.includes('/games/');
+  const prefix = inGamesDir ? '' : 'games/';
+
   const games = [
-    { label: 'MINE', href: 'games/minesweeper.html', svg: `<svg viewBox="0 0 32 32" width="36" height="36" shape-rendering="crispEdges"><rect width="32" height="32" fill="#0d0d1a"/><rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#00ffcc" stroke-width="1"/><rect x="5" y="5" width="4" height="4" fill="#2a2a4a"/><rect x="10" y="5" width="4" height="4" fill="#2a2a4a"/><rect x="15" y="5" width="4" height="4" fill="#2a2a4a"/><rect x="5" y="10" width="4" height="4" fill="#2a2a4a"/><rect x="10" y="10" width="4" height="4" fill="#ff3366" opacity="0.85"/><rect x="15" y="10" width="4" height="4" fill="#2a2a4a"/><circle cx="13" cy="13" r="2" fill="#00ffcc"/></svg>` },
-    { label: 'CHESS', href: 'games/chess.html', svg: `<svg viewBox="0 0 32 32" width="36" height="36" shape-rendering="crispEdges"><rect width="32" height="32" fill="#0d0d1a"/><rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#00ffcc" stroke-width="1"/><rect x="13" y="14" width="6" height="1" fill="#00ffcc"/><rect x="15" y="12" width="2" height="5" fill="#00ffcc"/><rect x="12" y="17" width="8" height="2" fill="#00ffcc"/><rect x="11" y="19" width="10" height="3" fill="#00e5ff" opacity="0.7"/></svg>` },
-    { label: 'SNAKE', href: 'games/snake.html', svg: `<svg viewBox="0 0 32 32" width="36" height="36" shape-rendering="crispEdges"><rect width="32" height="32" fill="#0d0d1a"/><rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#00ffcc" stroke-width="1"/><rect x="6" y="22" width="4" height="4" fill="#39ff14"/><rect x="10" y="22" width="4" height="4" fill="#39ff14"/><rect x="14" y="22" width="4" height="4" fill="#39ff14"/><rect x="14" y="18" width="4" height="4" fill="#39ff14"/><rect x="22" y="14" width="4" height="4" fill="#00ffcc"/><rect x="7" y="7" width="4" height="4" fill="#ff3366" opacity="0.9"/></svg>` },
-    { label: 'TETRIS', href: 'games/tetris.html', svg: `<svg viewBox="0 0 32 32" width="36" height="36" shape-rendering="crispEdges"><rect width="32" height="32" fill="#0d0d1a"/><rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#00ffcc" stroke-width="1"/><rect x="5" y="5" width="4" height="4" fill="#00e5ff"/><rect x="5" y="9" width="4" height="4" fill="#00e5ff"/><rect x="5" y="13" width="4" height="4" fill="#00e5ff"/><rect x="5" y="17" width="4" height="4" fill="#00e5ff"/><rect x="10" y="13" width="4" height="4" fill="#39ff14"/><rect x="14" y="13" width="4" height="4" fill="#39ff14"/><rect x="14" y="25" width="4" height="4" fill="#cc44ff"/></svg>` },
+    { label: 'MINE', href: prefix + 'minesweeper.html', svg: `<svg viewBox="0 0 32 32" width="36" height="36" shape-rendering="crispEdges"><rect width="32" height="32" fill="#0d0d1a"/><rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#00ffcc" stroke-width="1"/><rect x="5" y="5" width="4" height="4" fill="#2a2a4a"/><rect x="10" y="5" width="4" height="4" fill="#2a2a4a"/><rect x="15" y="5" width="4" height="4" fill="#2a2a4a"/><rect x="5" y="10" width="4" height="4" fill="#2a2a4a"/><rect x="10" y="10" width="4" height="4" fill="#ff3366" opacity="0.85"/><rect x="15" y="10" width="4" height="4" fill="#2a2a4a"/><circle cx="13" cy="13" r="2" fill="#00ffcc"/></svg>` },
+    { label: 'CHESS', href: prefix + 'chess.html', svg: `<svg viewBox="0 0 32 32" width="36" height="36" shape-rendering="crispEdges"><rect width="32" height="32" fill="#0d0d1a"/><rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#00ffcc" stroke-width="1"/><rect x="13" y="14" width="6" height="1" fill="#00ffcc"/><rect x="15" y="12" width="2" height="5" fill="#00ffcc"/><rect x="12" y="17" width="8" height="2" fill="#00ffcc"/><rect x="11" y="19" width="10" height="3" fill="#00e5ff" opacity="0.7"/></svg>` },
+    { label: 'SNAKE', href: prefix + 'snake.html', svg: `<svg viewBox="0 0 32 32" width="36" height="36" shape-rendering="crispEdges"><rect width="32" height="32" fill="#0d0d1a"/><rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#00ffcc" stroke-width="1"/><rect x="6" y="22" width="4" height="4" fill="#39ff14"/><rect x="10" y="22" width="4" height="4" fill="#39ff14"/><rect x="14" y="22" width="4" height="4" fill="#39ff14"/><rect x="14" y="18" width="4" height="4" fill="#39ff14"/><rect x="22" y="14" width="4" height="4" fill="#00ffcc"/><rect x="7" y="7" width="4" height="4" fill="#ff3366" opacity="0.9"/></svg>` },
+    { label: 'TETRIS', href: prefix + 'tetris.html', svg: `<svg viewBox="0 0 32 32" width="36" height="36" shape-rendering="crispEdges"><rect width="32" height="32" fill="#0d0d1a"/><rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#00ffcc" stroke-width="1"/><rect x="5" y="5" width="4" height="4" fill="#00e5ff"/><rect x="5" y="9" width="4" height="4" fill="#00e5ff"/><rect x="5" y="13" width="4" height="4" fill="#00e5ff"/><rect x="5" y="17" width="4" height="4" fill="#00e5ff"/><rect x="10" y="13" width="4" height="4" fill="#39ff14"/><rect x="14" y="13" width="4" height="4" fill="#39ff14"/><rect x="14" y="25" width="4" height="4" fill="#cc44ff"/></svg>` },
   ];
 
   const dock = document.createElement('div');
@@ -642,3 +661,4 @@ document.addEventListener('DOMContentLoaded', async () => {
   initFileViewer();
   initDesktopIcons();
 });
+
