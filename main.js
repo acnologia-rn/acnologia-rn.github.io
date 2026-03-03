@@ -90,7 +90,7 @@ function initCounter() {
   render(localCount);
 
   // Fetch worldwide count and update
-  fetch('https://api.counterapi.dev/v1/acnologia/visitors/up')
+  fetch(`https://api.counterapi.dev/v1/acnologia/visitors/up?t=${Date.now()}`, { cache: 'no-store' })
     .then(res => res.json())
     .then(data => {
       if (data && typeof data.count === 'number') {
@@ -661,4 +661,5 @@ document.addEventListener('DOMContentLoaded', async () => {
   initFileViewer();
   initDesktopIcons();
 });
+
 
