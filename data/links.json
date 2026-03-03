@@ -1,7 +1,7 @@
 [
   {
     "label": "GitHub",
-    "url": "https://github.com/",
+    "url": "https://github.com/acnologia-rn",
     "icon": "🐙",
     "cat": "social"
   },
@@ -21,12 +21,6 @@
     "label": "no entries here yet(friends don't have pages)",
     "url": "",
     "icon": "💻",
-    "cat": "friends"
-  },
-  {
-    "label": "nullpt.rs",
-    "url": "https://nullpt.rs/",
-    "icon": "🔮",
     "cat": "friends"
   },
   {
