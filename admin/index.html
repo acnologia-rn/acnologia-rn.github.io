@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>// access denied</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="stylesheet" href="../style.css" />
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .login-wrap {
+            width: 360px;
+            max-width: calc(100vw - 32px);
+        }
+
+        .login-pre {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--accent);
+            text-shadow: 0 0 8px var(--accent);
+            white-space: pre;
+            text-align: center;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .login-field {
+            margin-bottom: 12px;
+        }
+
+        .login-label {
+            font-family: var(--font-pixel);
+            font-size: 8px;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .login-input {
+            width: 100%;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            padding: 8px 12px;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .login-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 255, 204, 0.12);
+        }
+
+        .login-input::placeholder {
+            color: var(--text-dim);
+            opacity: 0.5;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-family: var(--font-pixel);
+            font-size: 9px;
+            padding: 10px;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: all 0.15s;
+            margin-top: 4px;
+        }
+
+        .login-btn:hover {
+            background: rgba(0, 255, 204, 0.08);
+            box-shadow: 0 0 16px rgba(0, 255, 204, 0.2);
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        .login-error {
+            display: none;
+            font-family: var(--font-pixel);
+            font-size: 8px;
+            color: var(--accent);
+            text-align: center;
+            margin-top: 10px;
+            padding: 8px;
+            background: rgba(255, 51, 102, 0.08);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+        }
+
+        .login-attempts {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-dim);
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .terminal-lines {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            padding: 12px;
+        }
+
+        .tl {
+            margin-bottom: 3px;
+        }
+
+        .tl .cmd {
+            color: var(--primary);
+        }
+
+        .tl .val {
+            color: var(--cyan);
+        }
+
+        .tl .err {
+            color: var(--accent);
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-6px);
+            }
+
+            40% {
+                transform: translateX(6px);
+            }
+
+            60% {
+                transform: translateX(-4px);
+            }
+
+            80% {
+                transform: translateX(4px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-wrap">
+        <pre class="login-pre">
+▓█████▄  ▄▄▄       ███▄ ▄███▓ ▒█████   ███▄    █ 
+▒██▀ ██▌▒████▄    ▓██▒▀█▀ ██▒▒██▒  ██▒ ██ ▀█   █ 
+░██   █▌▒██  ▀█▄  ▓██    ▓██░▒██░  ██▒▓██  ▀█ ██▒
+░▓█▄   ▌░██▄▄▄▄██ ▒██    ▒██ ▒██   ██░▓██▒  ▐▌██▒
+░▒████▓  ▓█   ▓██▒▒██▒   ░██▒░ ████▓▒░▒██░   ▓██░
+ ▒▒▓  ▒  ▒▒   ▓▒█░░ ▒░   ░  ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒ 
+ ░ ▒  ▒   ▒   ▒▒ ░░  ░      ░  ░ ▒ ▒░ ░ ░░   ░ ▒░
+ ░ ░  ░   ░   ▒   ░      ░   ░ ░ ░ ▒     ░   ░ ░ 
+   ░          ░  ░       ░       ░ ░           ░ 
+ ░</pre>
+
+        <div class="terminal-lines">
+            <div class="tl"><span class="text-dim">$</span> <span class="cmd">ssh</span> acn@void.local</div>
+            <div class="tl"><span class="err">WARNING</span>: Unauthorized access is prohibited.</div>
+            <div class="tl"><span class="val">Authenticated users only.</span></div>
+            <div class="tl"><span class="text-dim">$</span> <span id="tl-blink" class="cmd">_</span></div>
+        </div>
+
+        <div class="window">
+            <div class="window-title">
+                <div class="win-buttons">
+                    <span class="win-btn close"></span>
+                    <span class="win-btn min"></span>
+                    <span class="win-btn max"></span>
+                </div>
+                🔒 auth.exe
+            </div>
+            <div class="window-body">
+                <form id="login-form" autocomplete="off">
+                    <div class="login-field">
+                        <label class="login-label" for="username">USERNAME</label>
+                        <input class="login-input" type="text" id="username" name="username"
+                            placeholder="enter username" autocomplete="off" spellcheck="false" />
+                    </div>
+                    <div class="login-field">
+                        <label class="login-label" for="password">PASSWORD</label>
+                        <input class="login-input" type="password" id="password" name="password"
+                            placeholder="••••••••••••••••" autocomplete="new-password" />
+                    </div>
+                    <button class="login-btn" type="submit">[ AUTHENTICATE ]</button>
+                </form>
+                <div class="login-error" id="login-error">ACCESS DENIED — invalid credentials</div>
+                <div class="login-attempts" id="login-attempts"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        'use strict';
+
+        // Blink cursor
+        setInterval(() => {
+            const b = document.getElementById('tl-blink');
+            if (b) b.style.opacity = b.style.opacity === '0' ? '1' : '0';
+        }, 600);
+
+        // ── Auth ─────────────────────────────────────────────────
+        const CORRECT_USER = 'acnologia';
+        let storedHash = null;
+
+        async function sha256(str) {
+            const enc = new TextEncoder().encode(str);
+            const buf = await crypto.subtle.digest('SHA-256', enc);
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Pre-hash the real password at page load
+        sha256('%LBwkRjmEQ7%!!tET').then(h => { storedHash = h; });
+
+        // If already logged in, go straight to dashboard
+        if (sessionStorage.getItem('acn-admin-auth') === 'true') {
+            window.location.href = '/admin/dashboard.html';
+        }
+
+        let attempts = 0;
+        const MAX_ATTEMPTS = 5;
+        const form = document.getElementById('login-form');
+        const errEl = document.getElementById('login-error');
+        const attEl = document.getElementById('login-attempts');
+
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+            if (attempts >= MAX_ATTEMPTS) return;
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const inputHash = await sha256(password);
+
+            if (username === CORRECT_USER && inputHash === storedHash) {
+                sessionStorage.setItem('acn-admin-auth', 'true');
+                errEl.style.display = 'none';
+                const btn = form.querySelector('.login-btn');
+                btn.textContent = '[ ACCESS GRANTED ]';
+                btn.style.color = 'var(--green)';
+                btn.style.borderColor = 'var(--green)';
+                // Use absolute path so it works on any server base
+                setTimeout(() => { window.location.href = '/admin/dashboard.html'; }, 700);
+            } else {
+                attempts++;
+                errEl.style.display = 'block';
+                if (attempts >= MAX_ATTEMPTS) {
+                    errEl.textContent = 'TOO MANY ATTEMPTS — locked for this session';
+                    const btn = form.querySelector('.login-btn');
+                    btn.disabled = true;
+                    btn.style.opacity = '0.4';
+                } else {
+                    attEl.textContent = `${MAX_ATTEMPTS - attempts} attempt${MAX_ATTEMPTS - attempts !== 1 ? 's' : ''} remaining`;
+                    form.querySelectorAll('.login-input').forEach(i => {
+                        i.style.animation = 'none';
+                        void i.offsetHeight;
+                        i.style.animation = 'shake 0.4s ease';
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
