@@ -823,6 +823,9 @@ function initDesktopIcons() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   initLoadingScreen();
+  const crtRgb = document.createElement('div');
+  crtRgb.className = 'crt-rgb-overlay';
+  document.body.appendChild(crtRgb);
   await initDynamicProfile();   // must run before initTypewriter
   initTabs();
   initClock();
@@ -840,6 +843,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initDesktopIcons();
   initEasterEggs();
 });
+
 
 
 
