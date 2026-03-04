@@ -163,6 +163,89 @@ function escHTML(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 }
+/* ═══════════════════════════════════════════════════════
+   MINI MARKDOWN PARSER — no dependencies
+   Supports: # headings, **bold**, *italic*, `code`,
+   ```code blocks```, > blockquotes, - lists, ---, [links](url)
+   ═══════════════════════════════════════════════════════ */
+function parseMd(md) {
+  let html = '';
+  const lines = md.replace(/\r\n/g, '\n').split('\n');
+  let inCode = false;
+  let codeBlock = '';
+  let inList = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Fenced code blocks
+    if (line.trim().startsWith('```')) {
+      if (inCode) {
+        html += `<pre><code>${escHTML(codeBlock.trim())}</code></pre>`;
+        codeBlock = '';
+        inCode = false;
+      } else {
+        if (inList) { html += '</ul>'; inList = false; }
+        inCode = true;
+      }
+      continue;
+    }
+    if (inCode) { codeBlock += line + '\n'; continue; }
+
+    // Horizontal rule
+    if (/^---+$/.test(line.trim())) {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += '<hr>';
+      continue;
+    }
+
+    // Headings
+    const hMatch = line.match(/^(#{1,3})\s+(.+)/);
+    if (hMatch) {
+      if (inList) { html += '</ul>'; inList = false; }
+      const lvl = hMatch[1].length;
+      html += `<h${lvl}>${inlineMd(hMatch[2])}</h${lvl}>`;
+      continue;
+    }
+
+    // Blockquote
+    if (line.trim().startsWith('> ')) {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += `<blockquote>${inlineMd(line.trim().slice(2))}</blockquote>`;
+      continue;
+    }
+
+    // Unordered list
+    const liMatch = line.match(/^\s*[-*]\s+(.+)/);
+    if (liMatch) {
+      if (!inList) { html += '<ul>'; inList = true; }
+      html += `<li>${inlineMd(liMatch[1])}</li>`;
+      continue;
+    } else if (inList && line.trim() === '') {
+      html += '</ul>'; inList = false;
+      continue;
+    }
+
+    // Empty line
+    if (line.trim() === '') continue;
+
+    // Paragraph
+    if (inList) { html += '</ul>'; inList = false; }
+    html += `<p>${inlineMd(line)}</p>`;
+  }
+
+  if (inList) html += '</ul>';
+  if (inCode) html += `<pre><code>${escHTML(codeBlock.trim())}</code></pre>`;
+  return html;
+}
+
+function inlineMd(text) {
+  return escHTML(text)
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+}
 
 /* ═══════════════════════════════════════════════════════
    CYBERPUNK ASCII SCRAMBLE EFFECT
@@ -277,7 +360,7 @@ function renderPhileList(containerEl, philes, maxItems) {
     titleLink.style.cssText = 'text-decoration:none;';
     titleLink.addEventListener('click', e => {
       e.preventDefault();
-      if (window.openFile) window.openFile(p.title, p.body || p.excerpt || '', p.date);
+      if (window.openFile) window.openFile(p.title, p.body || p.excerpt || '', p.date, p.md || null);
     });
     leftSpan.appendChild(titleLink);
 
@@ -598,13 +681,37 @@ function initCMatrix() {
    FILE VIEWER — open files as full blog post pages
    ═══════════════════════════════════════════════════════ */
 function initFileViewer() {
-  window.openFile = function (title, body, date) {
+  window.openFile = async function (title, body, date, mdPath) {
     const viewer = document.getElementById('file-viewer');
     const titleEl = document.getElementById('file-viewer-title');
     const bodyEl = document.getElementById('file-viewer-body');
     if (!viewer || !titleEl || !bodyEl) return;
     titleEl.textContent = '📄 ' + title;
     bodyEl.innerHTML = '';
+
+    // If a .md file is referenced, fetch and render it
+    if (mdPath) {
+      try {
+        bodyEl.innerHTML = '<p class="text-dim" style="font-size:12px;">loading…</p>';
+        const res = await fetch(`${mdPath}?t=${Date.now()}`);
+        if (res.ok) {
+          const mdText = await res.text();
+          const wrapper = document.createElement('div');
+          wrapper.className = 'md-content';
+          wrapper.innerHTML = parseMd(mdText);
+          bodyEl.innerHTML = '';
+          bodyEl.appendChild(wrapper);
+          viewer.style.display = 'block';
+          viewer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
+      } catch (e) {
+        console.error('Failed to load markdown', e);
+      }
+      // Fall through to plain text if fetch failed
+      bodyEl.innerHTML = '';
+    }
+
     const h = document.createElement('h2');
     h.textContent = title;
     h.style.cssText = 'margin-bottom:8px;font-size:16px;';
@@ -629,6 +736,62 @@ function initFileViewer() {
     const viewer = document.getElementById('file-viewer');
     if (viewer) viewer.style.display = 'none';
   };
+}
+/* ═══════════════════════════════════════════════════════
+   EASTER EGGS — secret keystroke sequences
+   ═══════════════════════════════════════════════════════ */
+function initEasterEggs() {
+  // Konami code: ↑↑↓↓←→←→BA
+  const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+  let konamiPos = 0;
+
+  // Word buffer for typing "hack" or "matrix"
+  let wordBuf = '';
+  let wordTimer = null;
+
+  document.addEventListener('keydown', e => {
+    // Skip if typing in input fields
+    if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+
+    // --- Konami code ---
+    if (e.code === KONAMI[konamiPos]) {
+      konamiPos++;
+      if (konamiPos === KONAMI.length) {
+        konamiPos = 0;
+        triggerGlitch();
+      }
+    } else {
+      konamiPos = 0;
+    }
+
+    // --- Word detection ---
+    if (e.key.length === 1 && /[a-z]/i.test(e.key)) {
+      wordBuf += e.key.toLowerCase();
+      clearTimeout(wordTimer);
+      wordTimer = setTimeout(() => { wordBuf = ''; }, 1500);
+
+      if (wordBuf.endsWith('hack')) { wordBuf = ''; triggerHack(); }
+      if (wordBuf.endsWith('matrix')) { wordBuf = ''; triggerMatrix(); }
+    }
+  });
+
+  function triggerGlitch() {
+    document.body.classList.add('glitch-mode');
+    setTimeout(() => document.body.classList.remove('glitch-mode'), 5000);
+  }
+
+  function triggerHack() {
+    const overlay = document.createElement('div');
+    overlay.className = 'hack-overlay';
+    overlay.innerHTML = '<div class="hack-text">ACCESS GRANTED</div><div class="hack-sub">welcome back, operator.</div>';
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.remove(), 2800);
+  }
+
+  function triggerMatrix() {
+    document.body.classList.add('matrix-mode');
+    setTimeout(() => document.body.classList.remove('matrix-mode'), 4000);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -675,7 +838,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   initCMatrix();
   initFileViewer();
   initDesktopIcons();
+  initEasterEggs();
 });
+
 
 
 
