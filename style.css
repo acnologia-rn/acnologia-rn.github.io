@@ -1584,10 +1584,11 @@ body::before {
   background: repeating-linear-gradient(0deg,
       transparent,
       transparent 2px,
-      rgba(0, 0, 0, 0.08) 2px,
-      rgba(0, 0, 0, 0.08) 3px);
+      rgba(0, 0, 0, 0.15) 2px,
+      rgba(0, 0, 0, 0.15) 3px);
   pointer-events: none;
   z-index: 9998;
+  opacity: 0.45;
   animation: crt-flicker 8s ease-in-out infinite;
 }
 
@@ -1596,40 +1597,45 @@ body::after {
   position: fixed;
   inset: 0;
   background: radial-gradient(ellipse at center,
-      transparent 60%,
-      rgba(0, 0, 0, 0.35) 100%);
+      transparent 50%,
+      rgba(0, 0, 0, 0.4) 85%,
+      rgba(0, 0, 0, 0.75) 100%);
   pointer-events: none;
   z-index: 9998;
+  border-radius: 14px;
 }
 
+/* ── Chromatic aberration (RGB split) on edges ── */
+.crt-rgb-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9997;
+  /* Cyan and red fringe at left/right edges */
+  box-shadow:
+    inset 3px 0 8px -4px rgba(0, 255, 204, 0.35),
+    inset -3px 0 8px -4px rgba(255, 51, 51, 0.35),
+    inset 0 3px 8px -4px rgba(0, 255, 204, 0.15),
+    inset 0 -3px 8px -4px rgba(255, 51, 51, 0.15);
+  border-radius: 14px;
+}
+
+/* ── Subtle screen flicker ── */
 @keyframes crt-flicker {
-
-  0%,
-  100% {
-    opacity: 0.04;
-  }
-
-  50% {
-    opacity: 0.06;
-  }
-
-  92% {
-    opacity: 0.03;
-  }
-
-  94% {
-    opacity: 0.07;
-  }
-
-  96% {
-    opacity: 0.04;
-  }
+  0%, 100% { opacity: 0.45; }
+  30% { opacity: 0.48; }
+  50% { opacity: 0.42; }
+  70% { opacity: 0.47; }
+  92% { opacity: 0.35; }
+  93% { opacity: 0.55; }
+  94% { opacity: 0.4; }
+  95% { opacity: 0.48; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   body::before {
     animation: none;
-    opacity: 0.03;
+    opacity: 0.3;
   }
 }
 
@@ -2053,4 +2059,5 @@ body.matrix-mode {
   content: '▶';
   font-size: 7px;
   color: #39ff14;
+
 }
