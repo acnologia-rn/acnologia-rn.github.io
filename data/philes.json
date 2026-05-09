@@ -1,5 +1,13 @@
 [
     {
+        "title": "new animations & update",
+        "excerpt": "trying out a new animation framework(for me) - its called animejs. pretty neat stuff although i suspect it may break this site because of its limitations due to hosting it on github pages.",
+        "date": "2026-05-09",
+        "url": "#",
+        "body": "",
+        "md": "data/philes/new-animations.md"
+    },
+    {
         "title": "fun quirk of the visitor counter",
         "excerpt": "i use Git Pages to host and showcase this website, as can be seen by the domain. a result of this is that i have decided to use as little external APIs as possible, with the exception of one - the visitor counter.",
         "date": "2026-03-04",
