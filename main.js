@@ -76,6 +76,7 @@ function initTypewriter() {
 function initCounter() {
   const el = document.getElementById('visitor-count');
   if (!el) return;
+
   // Initial optimistic load from localStorage
   let localCount = 1337;
   try {
@@ -90,6 +91,7 @@ function initCounter() {
   render(localCount);
 
   // Fetch worldwide count and update
+  // Added cache-busting parameter and no-store to prevent aggressive browser caching
   fetch(`https://api.counterapi.dev/v1/acnologia/visitors/up?t=${Date.now()}`, { cache: 'no-store' })
     .then(res => res.json())
     .then(data => {
@@ -163,6 +165,7 @@ function escHTML(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 }
+
 /* ═══════════════════════════════════════════════════════
    MINI MARKDOWN PARSER — no dependencies
    Supports: # headings, **bold**, *italic*, `code`,
@@ -360,7 +363,7 @@ function renderPhileList(containerEl, philes, maxItems) {
     titleLink.style.cssText = 'text-decoration:none;';
     titleLink.addEventListener('click', e => {
       e.preventDefault();
-       // Switch to Files tab so the viewer is visible
+      // Switch to Files tab so the viewer is visible
       const philesTab = document.querySelector('[data-tab="philes"]');
       if (philesTab) philesTab.click();
       if (window.openFile) window.openFile(p.title, p.body || p.excerpt || '', p.date, p.md || null);
@@ -600,7 +603,6 @@ function initLoadingScreen() {
 
   const bar = document.getElementById('loading-bar');
   const msgEl = document.getElementById('loading-msg');
-  const continueBtn = document.getElementById('continue-btn'); 
 
   function dismissLoader() {
     clearInterval(tick);
@@ -612,20 +614,6 @@ function initLoadingScreen() {
     setTimeout(() => { screen.style.display = 'none'; }, 550);
   }
 
-  function showContinueButton() {
-    clearInterval(tick);
-    if (bar) bar.style.width = '100%';
-    if (msgEl) msgEl.textContent = 'READY. WAITING FOR USER INPUT.';
-    if (continueBtn) {
-      continueBtn.style.display = 'block';
-      continueBtn.onclick = () => {
-        dismissLoader();
-        const playBtn = document.getElementById('btn-play');
-        if (playBtn) playBtn.click();
-      };
-    }
-  }
-
   let pct = 0;
   const tick = setInterval(() => {
     pct = Math.min(100, pct + (Math.random() * 8 + 4)); // faster: 4-12% per tick
@@ -634,11 +622,11 @@ function initLoadingScreen() {
       const next = Math.floor((pct / 100) * (msgs.length - 1));
       if (next > msgI) { msgI = next; msgEl.textContent = msgs[msgI]; }
     }
-    if (pct >= 100) showContinueButton();
+    if (pct >= 100) dismissLoader();
   }, 30);
 
   // Hard cap: loader always gone within 3 seconds
-  setTimeout(showContinueButton, 3000);
+  setTimeout(dismissLoader, 3000);
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -740,6 +728,7 @@ function initFileViewer() {
     if (viewer) viewer.style.display = 'none';
   };
 }
+
 /* ═══════════════════════════════════════════════════════
    EASTER EGGS — secret keystroke sequences
    ═══════════════════════════════════════════════════════ */
@@ -802,6 +791,7 @@ function initEasterEggs() {
    ═══════════════════════════════════════════════════════ */
 function initDesktopIcons() {
   if (document.getElementById('desktop-dock')) return; // already injected
+
   const inGamesDir = window.location.pathname.includes('/games/');
   const prefix = inGamesDir ? '' : 'games/';
 
@@ -822,10 +812,472 @@ function initDesktopIcons() {
   document.body.appendChild(dock);
 }
 
+/* ═══════════════════════════════════════════════════════
+   ANIME.JS ORCHESTRATION — smooth entrance animations
+   Loaded from CDN for GitHub Pages compatibility
+   Falls back gracefully if anime.js CDN fails
+   ═══════════════════════════════════════════════════════ */
+
+function initAnimeAnimations() {
+  // Guard: if anime.js didn't load, bail silently
+  if (typeof anime === 'undefined') {
+    console.warn('anime.js not loaded — skipping animations');
+    return;
+  }
+
+  // Signal CSS that animation initial states should apply
+  document.body.classList.add('anm-ready');
+
+  // ── Utility: animate elements on scroll ────────────
+  const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        scrollObserver.unobserve(el);
+        const delay = parseInt(el.dataset.anmDelay || '0', 10);
+
+        anime({
+          targets: el,
+          opacity: [0, 1],
+          translateY: [24, 0],
+          duration: 700,
+          delay: delay,
+          easing: 'easeOutCubic',
+        });
+      }
+    });
+  }, { threshold: 0.15 });
+
+  // ── 1. Status bar slide-in ─────────────────────────
+  const statusBar = document.querySelector('.status-bar');
+  if (statusBar) {
+    anime({
+      targets: statusBar,
+      translateY: [-40, 0],
+      opacity: [0, 1],
+      duration: 600,
+      easing: 'easeOutExpo',
+      delay: 200,
+    });
+  }
+
+  // ── 2. ASCII header entrance ───────────────────────
+  const asciiHeader = document.querySelector('.ascii-header');
+  if (asciiHeader) {
+    // Glitch-in effect for ASCII art
+    const asciiArt = asciiHeader.querySelector('.ascii-art');
+    const subtitle = asciiHeader.querySelector('.header-subtitle');
+
+    if (asciiArt) {
+      anime({
+        targets: asciiArt,
+        opacity: [0, 1],
+        scaleY: [0.3, 1],
+        duration: 800,
+        delay: 400,
+        easing: 'easeOutExpo',
+      });
+
+      // Brief chromatic flicker on load
+      anime({
+        targets: asciiArt,
+        filter: ['blur(3px)', 'blur(0px)'],
+        duration: 400,
+        delay: 500,
+        easing: 'easeOutQuad',
+      });
+    }
+
+    if (subtitle) {
+      anime({
+        targets: subtitle,
+        opacity: [0, 1],
+        translateY: [12, 0],
+        letterSpacing: ['8px', '3px'],
+        duration: 700,
+        delay: 800,
+        easing: 'easeOutCubic',
+      });
+    }
+  }
+
+  // ── 3. Nav tabs cascade ────────────────────────────
+  const navTabs = document.querySelectorAll('.nav-tab');
+  if (navTabs.length) {
+    anime({
+      targets: navTabs,
+      opacity: [0, 1],
+      translateY: [16, 0],
+      duration: 450,
+      delay: anime.stagger(80, { start: 600 }),
+      easing: 'easeOutCubic',
+    });
+  }
+
+  // ── 4. Windows — staggered reveal ──────────────────
+  function animateWindowsInPanel(panelId) {
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+    const windows = panel.querySelectorAll('.window');
+    anime({
+      targets: windows,
+      opacity: [0, 1],
+      translateY: [40, 0],
+      scale: [0.96, 1],
+      duration: 650,
+      delay: anime.stagger(120, { start: 100 }),
+      easing: 'easeOutCubic',
+    });
+  }
+
+  // Animate the initially active panel
+  animateWindowsInPanel('panel-home');
+
+  // ── 5. Tags — pop-in cascade ───────────────────────
+  const tags = document.querySelectorAll('.tag');
+  if (tags.length) {
+    anime({
+      targets: tags,
+      opacity: [0, 1],
+      scale: [0.5, 1],
+      duration: 400,
+      delay: anime.stagger(60, { start: 1200 }),
+      easing: 'easeOutBack',
+    });
+  }
+
+  // ── 6. Badges — slot-machine drop ──────────────────
+  const badges = document.querySelectorAll('.badge');
+  if (badges.length) {
+    anime({
+      targets: badges,
+      opacity: [0, 1],
+      translateY: [-20, 0],
+      rotateX: [90, 0],
+      duration: 500,
+      delay: anime.stagger(100, { start: 1400 }),
+      easing: 'easeOutCubic',
+    });
+  }
+
+  // ── 7. Profile avatar pulse on load ────────────────
+  const avatar = document.querySelector('.profile-avatar');
+  if (avatar) {
+    anime({
+      targets: avatar,
+      scale: [0.7, 1],
+      opacity: [0, 1],
+      borderColor: ['rgba(0,255,204,0)', 'rgba(0,255,204,1)'],
+      duration: 600,
+      delay: 900,
+      easing: 'easeOutBack',
+    });
+  }
+
+  // ── 8. Visitor counter digits — slot roll ──────────
+  function animateCounterDigits() {
+    const digits = document.querySelectorAll('.digit');
+    if (!digits.length) return;
+    anime({
+      targets: digits,
+      opacity: [0, 1],
+      translateY: [-16, 0],
+      duration: 350,
+      delay: anime.stagger(50, { start: 1500 }),
+      easing: 'easeOutQuad',
+    });
+  }
+  // Run after counter renders
+  setTimeout(animateCounterDigits, 200);
+
+  // ── 9. Tab switch animation ────────────────────────
+  // Replace the CSS fadeIn with a richer anime.js transition
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetId = `panel-${tab.dataset.tab}`;
+      const panel = document.getElementById(targetId);
+      if (!panel) return;
+
+      // Animate all windows inside the newly-active panel
+      const windows = panel.querySelectorAll('.window');
+      anime.remove(windows); // cancel any running animations
+
+      anime({
+        targets: windows,
+        opacity: [0, 1],
+        translateY: [30, 0],
+        scale: [0.97, 1],
+        duration: 550,
+        delay: anime.stagger(90),
+        easing: 'easeOutCubic',
+      });
+
+      // Animate child grids inside the panel
+      const gridItems = panel.querySelectorAll('.link-item, .game-card, .phile-list li');
+      if (gridItems.length) {
+        anime.remove(gridItems);
+        anime({
+          targets: gridItems,
+          opacity: [0, 1],
+          translateY: [16, 0],
+          duration: 400,
+          delay: anime.stagger(40, { start: 200 }),
+          easing: 'easeOutCubic',
+        });
+      }
+    });
+  });
+
+  // ── 10. Link items — hover micro-animations ────────
+  document.querySelectorAll('.link-item').forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      anime.remove(item);
+      anime({
+        targets: item,
+        scale: 1.04,
+        duration: 250,
+        easing: 'easeOutCubic',
+      });
+      // Animate the arrow icon
+      const arrow = item.querySelector('.link-arrow');
+      if (arrow) {
+        anime({
+          targets: arrow,
+          translateX: [0, 4],
+          duration: 300,
+          easing: 'easeOutCubic',
+        });
+      }
+    });
+    item.addEventListener('mouseleave', () => {
+      anime.remove(item);
+      anime({
+        targets: item,
+        scale: 1,
+        duration: 400,
+        easing: 'easeOutCubic',
+      });
+      const arrow = item.querySelector('.link-arrow');
+      if (arrow) {
+        anime({
+          targets: arrow,
+          translateX: 0,
+          duration: 300,
+          easing: 'easeOutCubic',
+        });
+      }
+    });
+  });
+
+  // ── 11. Game cards — tilt + glow on hover ──────────
+  document.querySelectorAll('.game-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      anime.remove(card);
+      anime({
+        targets: card,
+        scale: 1.03,
+        translateY: -6,
+        duration: 350,
+        easing: 'easeOutCubic',
+      });
+      const icon = card.querySelector('.game-card-icon');
+      if (icon) {
+        anime({
+          targets: icon,
+          rotateY: [0, 15],
+          scale: [1, 1.15],
+          duration: 500,
+          easing: 'easeOutCubic',
+        });
+      }
+    });
+    card.addEventListener('mouseleave', () => {
+      anime.remove(card);
+      anime({
+        targets: card,
+        scale: 1,
+        translateY: 0,
+        duration: 500,
+        easing: 'easeOutCubic',
+      });
+      const icon = card.querySelector('.game-card-icon');
+      if (icon) {
+        anime({
+          targets: icon,
+          rotateY: 0,
+          scale: 1,
+          duration: 500,
+          easing: 'easeOutCubic',
+        });
+      }
+    });
+  });
+
+  // ── 12. Window title bars — glow pulse on hover ────
+  document.querySelectorAll('.window').forEach(win => {
+    const titleBar = win.querySelector('.window-title');
+    if (!titleBar) return;
+
+    win.addEventListener('mouseenter', () => {
+      anime({
+        targets: titleBar,
+        boxShadow: ['inset 0 0 0 rgba(0,255,204,0)', 'inset 0 -1px 12px rgba(0,255,204,0.08)'],
+        duration: 400,
+        easing: 'easeOutQuad',
+      });
+    });
+    win.addEventListener('mouseleave', () => {
+      anime({
+        targets: titleBar,
+        boxShadow: 'inset 0 0 0 rgba(0,255,204,0)',
+        duration: 600,
+        easing: 'easeOutQuad',
+      });
+    });
+  });
+
+  // ── 13. Win-btn dots — bounce on hover ─────────────
+  document.querySelectorAll('.win-btn').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      anime({
+        targets: btn,
+        scale: [1, 1.5, 1.15],
+        duration: 350,
+        easing: 'easeOutElastic(1, .6)',
+      });
+    });
+    btn.addEventListener('mouseleave', () => {
+      anime({
+        targets: btn,
+        scale: 1,
+        duration: 300,
+        easing: 'easeOutCubic',
+      });
+    });
+  });
+
+  // ── 14. File viewer open animation ─────────────────
+  const origOpenFile = window.openFile;
+  if (origOpenFile) {
+    window.openFile = async function (...args) {
+      await origOpenFile.apply(this, args);
+      const viewer = document.getElementById('file-viewer');
+      if (viewer && viewer.style.display !== 'none') {
+        anime({
+          targets: viewer,
+          opacity: [0, 1],
+          translateY: [30, 0],
+          scale: [0.95, 1],
+          duration: 500,
+          easing: 'easeOutCubic',
+        });
+      }
+    };
+  }
+
+  // ── 15. Phile list items — scroll-triggered ────────
+  document.querySelectorAll('.phile-list li').forEach((li, i) => {
+    li.dataset.anmDelay = String(i * 50);
+    scrollObserver.observe(li);
+  });
+
+  // ── 16. Footer slide-up on scroll ──────────────────
+  const footer = document.querySelector('.site-footer');
+  if (footer) {
+    footer.dataset.anmDelay = '0';
+    scrollObserver.observe(footer);
+  }
+
+  // ── 17. Music player — entrance animation ──────────
+  const musicPlayer = document.getElementById('music-player');
+  if (musicPlayer) {
+    anime({
+      targets: musicPlayer,
+      translateX: [80, 0],
+      opacity: [0, 1],
+      duration: 700,
+      delay: 1800,
+      easing: 'easeOutCubic',
+    });
+  }
+
+  // ── 18. Desktop dock icons — pop in ────────────────
+  // Delay to let the dock be injected by initDesktopIcons first
+  setTimeout(() => {
+    const dockIcons = document.querySelectorAll('.desktop-icon');
+    if (dockIcons.length) {
+      anime({
+        targets: dockIcons,
+        opacity: [0, 1],
+        scale: [0.3, 1],
+        translateY: [20, 0],
+        duration: 500,
+        delay: anime.stagger(80),
+        easing: 'easeOutBack',
+      });
+    }
+  }, 100);
+
+  // ── 19. Ambient floating particle system ───────────
+  // A few slow-moving cyber particles in the background
+  createCyberParticles();
+}
+
+/* ── Cyber Particles — floating neon dots ────────────── */
+function createCyberParticles() {
+  if (typeof anime === 'undefined') return;
+
+  const container = document.createElement('div');
+  container.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;';
+  container.id = 'cyber-particles';
+  document.body.appendChild(container);
+
+  const colors = ['#00ffcc', '#00e5ff', '#cc44ff', '#ff3366'];
+  const count = 18;
+
+  for (let i = 0; i < count; i++) {
+    const dot = document.createElement('div');
+    const size = Math.random() * 3 + 1;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    dot.style.cssText = `
+      position:absolute;
+      width:${size}px;height:${size}px;
+      background:${color};
+      border-radius:50%;
+      opacity:0;
+      box-shadow:0 0 ${size * 3}px ${color};
+      left:${Math.random() * 100}%;
+      top:${Math.random() * 100}%;
+    `;
+    container.appendChild(dot);
+
+    // Continuous floating animation
+    anime({
+      targets: dot,
+      translateX: () => anime.random(-120, 120),
+      translateY: () => anime.random(-120, 120),
+      opacity: [
+        { value: 0.15 + Math.random() * 0.25, duration: 1200 },
+        { value: 0, duration: 1200 },
+      ],
+      scale: [
+        { value: 1.5, duration: 1500 },
+        { value: 0.5, duration: 1500 },
+      ],
+      duration: 4000 + Math.random() * 4000,
+      delay: Math.random() * 3000,
+      loop: true,
+      easing: 'easeInOutSine',
+      direction: 'alternate',
+    });
+  }
+}
+
 /* ─── Boot ───────────────────────────────────────────── */
 
 document.addEventListener('DOMContentLoaded', async () => {
   initLoadingScreen();
+  // Inject CRT RGB split overlay
   const crtRgb = document.createElement('div');
   crtRgb.className = 'crt-rgb-overlay';
   document.body.appendChild(crtRgb);
@@ -845,11 +1297,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initFileViewer();
   initDesktopIcons();
   initEasterEggs();
+
+  // ── Anime.js animations — after everything is rendered ──
+  // Slight delay so the loading screen finishes first
+  setTimeout(initAnimeAnimations, 600);
 });
-
-
-
-
-
-
-
