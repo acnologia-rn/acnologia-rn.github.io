@@ -4,11 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Acnologia // personal site</title>
-  <meta name="description" content="Acnologia's personal corner of the internet. Code, games, music, and thoughts." />
-  <meta property="og:title" content="Acnologia" />
-  <meta property="og:description" content="look at my cool site" />
-  <meta name="theme-color" content="#00ffcc" />
+  <title>aryaan yadav // personal site</title>
+  <meta name="description"
+    content="aryaan yadav's personal corner of the internet. Code, media, music, and thoughts." />
+  <meta property="og:title" content="aryaan yadav" />
+  <meta property="og:description" content="Welcome to my website." />
+  <meta name="theme-color" content="#ff3333" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="stylesheet" href="style.css" />
   <style>
@@ -26,15 +27,18 @@
   <div id="loading-screen" aria-hidden="true">
     <canvas id="loading-canvas"></canvas>
     <div id="loading-text">
-      <pre style="font-size:11px;color:#00ffcc;text-shadow:0 0 10px #00ffcc;line-height:1.2;">   _    ____ _   _  ___  _     ___   ____ ___ _    
-  / \  / ___| \ | |/ _ \| |   / _ \ / ___|_ _/ \   
- / _ \| |   |  \| | | | | |  | | | | |  _ | / _ \  
-/ ___ \ |___| |\  | |_| | |__| |_| | |_| || / ___ \ 
-\/_/\_/\____|_| \_|\___/|_____\___/ \____|___\_/ \_/</pre>
+      <pre style="font-size:11px;color:#ff3333;text-shadow:0 0 10px #ff3333;line-height:1.2;">                                                       _             
+                                                      | |            
+   __ _ _ __ _   _  __ _  __ _ _ __    _   _  __ _  __| | __ ___   __
+  / _` | '__| | | |/ _` |/ _` | '_ \  | | | |/ _` |/ _` |/ _` \ \ / /
+ | (_| | |  | |_| | (_| | (_| | | | | | |_| | (_| | (_| | (_| |\ V / 
+  \__,_|_|   \__, |\__,_|\__,_|_| |_|  \__, |\__,_|\__,_|\__,_| \_/  
+              __/ |                     __/ |                        
+             |___/                     |___/                         </pre>
       <div id="loading-bar-wrap">
         <div id="loading-bar"></div>
       </div>
-      <div id="loading-msg" style="font-family:monospace;font-size:11px;color:#00ffcc;margin-top:8px;">INITIALIZING...
+      <div id="loading-msg" style="font-family:monospace;font-size:11px;color:#ff3333;margin-top:8px;">INITIALIZING...
       </div>
       <button id="continue-btn"
         style="display:none; margin: 16px auto 0; font-family: var(--font-pixel); font-size: 10px; background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 10px; cursor: pointer; letter-spacing: 2px; transition: all 0.15s;">[
@@ -45,7 +49,7 @@
   <div class="status-bar">
     <div class="status-left">
       <span class="status-dot"></span>
-      <span class="pixel" style="font-size:8px; color:var(--primary);">ACNOLOGIA.DEV</span>
+      <span class="pixel" style="font-size:8px; color:var(--primary);">aryaan yadav.DEV</span>
       <span>// online</span>
     </div>
     <div class="status-right">
@@ -59,16 +63,22 @@
     <header class="ascii-header">
       <pre id="ascii-title" class="ascii-art glitch" role="button" tabindex="0" title="go home" style="cursor:pointer"
         onclick="document.querySelector('[data-tab=home]').click()"
-        onkeydown="if(event.key==='Enter')document.querySelector('[data-tab=home]').click()" data-text="   _    ____ _   _  ___  _     ___   ____ ___ _    
-  / \  / ___| \ | |/ _ \| |   / _ \ / ___|_ _/ \   
- / _ \| |   |  \| | | | | |  | | | | |  _ | / _ \  
-/ ___ \ |___| |\  | |_| | |__| |_| | |_| || / ___ \ 
-\/_/\_/\____|_| \_|\___/|_____\___/ \____|___\_/ \_/">   _    ____ _   _  ___  _     ___   ____ ___ _    
-  / \  / ___| \ | |/ _ \| |   / _ \ / ___|_ _/ \   
- / _ \| |   |  \| | | | | |  | | | | |  _ | / _ \  
-/ ___ \ |___| |\  | |_| | |__| |_| | |_| || / ___ \ 
-\/_/\_/\____|_| \_|\___/|_____\___/ \____|___\_/ \_/</pre>
-      <div class="header-subtitle">look at my cool site<span>_</span></div>
+        onkeydown="if(event.key==='Enter')document.querySelector('[data-tab=home]').click()" data-text="                                                       _             
+                                                      | |            
+   __ _ _ __ _   _  __ _  __ _ _ __    _   _  __ _  __| | __ ___   __
+  / _` | '__| | | |/ _` |/ _` | '_ \  | | | |/ _` |/ _` |/ _` \ \ / /
+ | (_| | |  | |_| | (_| | (_| | | | | | |_| | (_| | (_| | (_| |\ V / 
+  \__,_|_|   \__, |\__,_|\__,_|_| |_|  \__, |\__,_|\__,_|\__,_| \_/  
+              __/ |                     __/ |                        
+             |___/                     |___/                         ">                                                       _             
+                                                      | |            
+   __ _ _ __ _   _  __ _  __ _ _ __    _   _  __ _  __| | __ ___   __
+  / _` | '__| | | |/ _` |/ _` | '_ \  | | | |/ _` |/ _` |/ _` \ \ / /
+ | (_| | |  | |_| | (_| | (_| | | | | | |_| | (_| | (_| | (_| |\ V / 
+  \__,_|_|   \__, |\__,_|\__,_|_| |_|  \__, |\__,_|\__,_|\__,_| \_/  
+              __/ |                     __/ |                        
+             |___/                     |___/                         </pre>
+      <div class="header-subtitle">welcome to my small corner of the internet<span>_</span></div>
     </header>
 
     <!-- Nav Tabs -->
@@ -91,26 +101,26 @@
             <span class="win-btn min"></span>
             <span class="win-btn max"></span>
           </div>
-           profile.exe
+          profile.exe
         </div>
         <div class="window-body">
           <div class="profile-section">
-            <div class="profile-avatar" title="Acnologia" style="overflow:-moz-hidden-unscrollable; overflow:hidden;">
+            <div class="profile-avatar" title="aryaan yadav"
+              style="overflow:-moz-hidden-unscrollable; overflow:hidden;">
               <span id="home-avatar-emoji">🐉</span>
               <img id="home-avatar-img" src="" style="display:none;width:100%;height:100%;object-fit:cover;"
                 alt="avatar" />
             </div>
             <div class="profile-info">
-              <h2 class="glitch" data-text="ACNOLOGIA">ACNOLOGIA</h2>
+              <h2 class="glitch" data-text="aryaan yadav">aryaan yadav</h2>
               <p id="typewriter" class="text-dim"
                 data-text="code · chaos · solitude. somewhere between exploit dev and 3am playlists."></p>
               <div id="profile-tags">
                 <span class="tag">code</span>
-                <span class="tag">security</span>
+                <span class="tag">cybersecurity</span>
                 <span class="tag">music</span>
-                <span class="tag">games</span>
-                <span class="tag">night owl</span>
-                <span class="tag">eternal lone wolf</span>
+                <span class="tag">books</span>
+                <span class="tag">machine learning & ai</span>
               </div>
             </div>
           </div>
@@ -154,7 +164,7 @@
             <span class="win-btn min"></span>
             <span class="win-btn max"></span>
           </div>
-           recent_thoughts.txt
+          recent_files.txt
         </div>
         <div class="window-body">
           <!-- Dynamically populated from localStorage by main.js -->
@@ -173,12 +183,12 @@
             <span class="win-btn min"></span>
             <span class="win-btn max"></span>
           </div>
-           readme.txt
+          📄 readme.txt
         </div>
         <div class="window-body">
           <pre style="font-size:11px; color:var(--primary); margin-bottom:16px;">
  ┌─────────────────────────────────────────────────────┐
- │                    ACNOLOGIA                        │
+ │                    aryaan yadav                        │
  │              ident / about / readme                 │
  └─────────────────────────────────────────────────────┘</pre>
 
@@ -187,7 +197,8 @@
               style="width:80px; height:80px; object-fit:cover; border:1px solid var(--border); border-radius:2px; display:none;"
               alt="avatar" />
             <div>
-              <p id="about-intro-text">handle: <span class="text-primary">acnologia</span>. you found my little corner
+              <p id="about-intro-text">handle: <span class="text-primary">aryaan yadav</span>. you found my little
+                corner
                 of the web.</p>
               <p id="about-interests-text">interests: <span class="text-cyan">security research</span> · <span
                   class="text-cyan">reverse engineering</span> · <span class="text-cyan">low-level systems</span> ·
@@ -237,7 +248,7 @@
           <h2 style="margin-bottom:12px;">// CONTACT</h2>
           <p style="font-size:12px;" id="about-contact-text">
             i'm not always online. the best way to reach me is via
-            <a href="mailto:acnologia@example.com">email</a> or
+            <a href="mailto:aryaan yadav@example.com">email</a> or
             <a href="https://github.com/" target="_blank" rel="noopener">github</a>.
             don't expect a fast reply. nothing personal, i'm just slow.
           </p>
@@ -251,15 +262,16 @@
             <canvas id="cmatrix-canvas"
               style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.18;pointer-events:none;"></canvas>
             <div style="position:relative;z-index:1;">
-              <p><span class="text-primary">acn@void</span><span class="text-dim">:</span><span
+              <p><span class="text-primary">aryaan@void</span><span class="text-dim">:</span><span
                   class="text-cyan">~</span><span class="text-dim">$</span> whoami</p>
-              <p class="text-dim" style="margin-bottom:8px;">acnologia — ewewewewe </p>
-              <p><span class="text-primary">acn@void</span><span class="text-dim">:</span><span
+              <p class="text-dim" style="margin-bottom:8px;">aryaan yadav — likely learning interesting coding paradigms
+              </p>
+              <p><span class="text-primary">aryaan@void</span><span class="text-dim">:</span><span
                   class="text-cyan">~</span><span class="text-dim">$</span> cat interests.txt</p>
-              <p class="text-dim" style="margin-bottom:8px;">llm research · cybersec · bit of react native · music · systems programming ·
+              <p class="text-dim" style="margin-bottom:8px;">researching backdoors · systems programming ·
                 being offline</p>
               <p>&nbsp;</p>
-              <p><span class="text-primary">acn@void</span><span class="text-dim">:</span><span
+              <p><span class="text-primary">aryaan@void</span><span class="text-dim">:</span><span
                   class="text-cyan">~</span><span class="text-dim">$</span> <span class="blink">█</span></p>
             </div>
           </div>
@@ -276,7 +288,7 @@
             <span class="win-btn min"></span>
             <span class="win-btn max"></span>
           </div>
-           links.html
+          links.html
         </div>
         <div class="window-body">
           <h2 class="mb-8">// MY LINKS</h2>
@@ -308,12 +320,6 @@
             <a href="https://vmfunc.re/" target="_blank" rel="noopener" class="link-item">
               <span class="link-icon">💻</span> vmfunc.re
             </a>
-            <a href="https://nullpt.rs/" target="_blank" rel="noopener" class="link-item">
-              <span class="link-icon">🔮</span> nullpt.rs
-            </a>
-            <a href="https://ud2.rip/" target="_blank" rel="noopener" class="link-item">
-              <span class="link-icon">⚡</span> ud2.rip
-            </a>
           </div>
 
           <hr class="divider" />
@@ -322,13 +328,6 @@
           <div class="links-grid" id="links-cool-grid">
             <a href="https://archive.org" target="_blank" rel="noopener" class="link-item">
               <span class="link-icon">📚</span> Internet Archive
-            </a>
-            <a href="https://1337x.to/" target="_blank" rel="noopener" class="link-item">
-              <span class="link-icon">🌊</span> 1337x
-            </a>
-            <a href="https://web.archive.org/web/20060618091650/http://messenger.msn.com/" target="_blank"
-              rel="noopener" class="link-item">
-              <span class="link-icon">💬</span> MSN (archived)
             </a>
           </div>
         </div>
@@ -357,7 +356,7 @@
             <span class="win-btn min"></span>
             <span class="win-btn max"></span>
           </div>
-           /files
+          /files
         </div>
         <div class="window-body">
           <p class="text-dim" style="font-size:12px; margin-bottom:16px;">
@@ -380,7 +379,7 @@
             <span class="win-btn min"></span>
             <span class="win-btn max"></span>
           </div>
-           games.exe
+          games.exe
         </div>
         <div class="window-body">
           <p class="text-dim" style="font-size:12px; margin-bottom:16px;">
@@ -393,7 +392,7 @@
                   <!-- Win98-style icon: Minesweeper -->
                   <rect width="32" height="32" fill="#0d0d1a" />
                   <!-- Icon body -->
-                  <rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#00ffcc" stroke-width="1" />
+                  <rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#ff3333" stroke-width="1" />
                   <!-- grid cells -->
                   <rect x="5" y="5" width="4" height="4" fill="#2a2a4a" />
                   <rect x="10" y="5" width="4" height="4" fill="#2a2a4a" />
@@ -413,8 +412,8 @@
                   <rect x="15" y="20" width="4" height="4" fill="#2a2a4a" />
                   <rect x="20" y="20" width="4" height="4" fill="#ff3366" opacity="0.9" />
                   <!-- mine dot -->
-                  <circle cx="13" cy="13" r="2" fill="#00ffcc" />
-                  <circle cx="18" cy="18" r="2" fill="#00ffcc" />
+                  <circle cx="13" cy="13" r="2" fill="#ff3333" />
+                  <circle cx="18" cy="18" r="2" fill="#ff3333" />
                   <!-- border highlight -->
                   <rect x="4" y="4" width="24" height="1" fill="rgba(255,255,255,0.2)" />
                   <rect x="4" y="4" width="1" height="24" fill="rgba(255,255,255,0.2)" />
@@ -429,7 +428,7 @@
               <span class="game-card-icon win98-icon" aria-label="Chess">
                 <svg viewBox="0 0 32 32" width="48" height="48" shape-rendering="crispEdges">
                   <rect width="32" height="32" fill="#0d0d1a" />
-                  <rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#00ffcc" stroke-width="1" />
+                  <rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#ff3333" stroke-width="1" />
                   <!-- checkerboard -->
                   <rect x="5" y="5" width="3" height="3" fill="#2a2a4a" />
                   <rect x="8" y="5" width="3" height="3" fill="#0d0d1a" />
@@ -446,10 +445,10 @@
                   <rect x="20" y="8" width="3" height="3" fill="#2a2a4a" />
                   <rect x="23" y="8" width="3" height="3" fill="#0d0d1a" />
                   <!-- king piece -->
-                  <rect x="13" y="14" width="6" height="1" fill="#00ffcc" />
-                  <rect x="15" y="12" width="2" height="5" fill="#00ffcc" />
-                  <rect x="12" y="17" width="8" height="2" fill="#00ffcc" />
-                  <rect x="11" y="19" width="10" height="3" fill="#00e5ff" opacity="0.7" />
+                  <rect x="13" y="14" width="6" height="1" fill="#ff3333" />
+                  <rect x="15" y="12" width="2" height="5" fill="#ff3333" />
+                  <rect x="12" y="17" width="8" height="2" fill="#ff3333" />
+                  <rect x="11" y="19" width="10" height="3" fill="#ff3333" opacity="0.7" />
                   <!-- top cross -->
                   <rect x="15" y="11" width="2" height="1" fill="#fff" />
                   <rect x="14" y="12" width="4" height="1" fill="#fff" opacity="0.7" />
@@ -464,16 +463,16 @@
               <span class="game-card-icon win98-icon" aria-label="Snake">
                 <svg viewBox="0 0 32 32" width="48" height="48" shape-rendering="crispEdges">
                   <rect width="32" height="32" fill="#0d0d1a" />
-                  <rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#00ffcc" stroke-width="1" />
+                  <rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#ff3333" stroke-width="1" />
                   <!-- snake body -->
-                  <rect x="6" y="24" width="4" height="4" fill="#39ff14" />
-                  <rect x="10" y="24" width="4" height="4" fill="#39ff14" />
-                  <rect x="14" y="24" width="4" height="4" fill="#39ff14" />
-                  <rect x="14" y="20" width="4" height="4" fill="#39ff14" />
-                  <rect x="14" y="16" width="4" height="4" fill="#39ff14" />
-                  <rect x="14" y="12" width="4" height="4" fill="#39ff14" />
-                  <rect x="18" y="12" width="4" height="4" fill="#39ff14" />
-                  <rect x="22" y="12" width="4" height="4" fill="#00ffcc" /><!-- head -->
+                  <rect x="6" y="24" width="4" height="4" fill="#ff6600" />
+                  <rect x="10" y="24" width="4" height="4" fill="#ff6600" />
+                  <rect x="14" y="24" width="4" height="4" fill="#ff6600" />
+                  <rect x="14" y="20" width="4" height="4" fill="#ff6600" />
+                  <rect x="14" y="16" width="4" height="4" fill="#ff6600" />
+                  <rect x="14" y="12" width="4" height="4" fill="#ff6600" />
+                  <rect x="18" y="12" width="4" height="4" fill="#ff6600" />
+                  <rect x="22" y="12" width="4" height="4" fill="#ff3333" /><!-- head -->
                   <!-- eye -->
                   <rect x="24" y="13" width="1" height="1" fill="#0d0d1a" />
                   <!-- food -->
@@ -490,27 +489,27 @@
               <span class="game-card-icon win98-icon" aria-label="Tetris">
                 <svg viewBox="0 0 32 32" width="48" height="48" shape-rendering="crispEdges">
                   <rect width="32" height="32" fill="#0d0d1a" />
-                  <rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#00ffcc" stroke-width="1" />
+                  <rect x="4" y="4" width="24" height="24" fill="#1a1a3a" stroke="#ff3333" stroke-width="1" />
                   <!-- I piece (cyan) -->
-                  <rect x="5" y="5" width="4" height="4" fill="#00e5ff" />
-                  <rect x="5" y="9" width="4" height="4" fill="#00e5ff" />
-                  <rect x="5" y="13" width="4" height="4" fill="#00e5ff" />
-                  <rect x="5" y="17" width="4" height="4" fill="#00e5ff" />
+                  <rect x="5" y="5" width="4" height="4" fill="#ff3333" />
+                  <rect x="5" y="9" width="4" height="4" fill="#ff3333" />
+                  <rect x="5" y="13" width="4" height="4" fill="#ff3333" />
+                  <rect x="5" y="17" width="4" height="4" fill="#ff3333" />
                   <!-- S piece (green) -->
-                  <rect x="10" y="13" width="4" height="4" fill="#39ff14" />
-                  <rect x="14" y="13" width="4" height="4" fill="#39ff14" />
-                  <rect x="10" y="17" width="4" height="4" fill="#39ff14" />
-                  <rect x="6" y="17" width="4" height="4" fill="#39ff14" />
+                  <rect x="10" y="13" width="4" height="4" fill="#ff6600" />
+                  <rect x="14" y="13" width="4" height="4" fill="#ff6600" />
+                  <rect x="10" y="17" width="4" height="4" fill="#ff6600" />
+                  <rect x="6" y="17" width="4" height="4" fill="#ff6600" />
                   <!-- L piece (orange) -->
                   <rect x="19" y="5" width="4" height="4" fill="#ff9900" />
                   <rect x="19" y="9" width="4" height="4" fill="#ff9900" />
                   <rect x="19" y="13" width="4" height="4" fill="#ff9900" />
                   <rect x="23" y="13" width="4" height="4" fill="#ff9900" />
                   <!-- T piece (purple) -->
-                  <rect x="10" y="21" width="4" height="4" fill="#cc44ff" />
-                  <rect x="14" y="21" width="4" height="4" fill="#cc44ff" />
-                  <rect x="18" y="21" width="4" height="4" fill="#cc44ff" />
-                  <rect x="14" y="25" width="4" height="4" fill="#cc44ff" />
+                  <rect x="10" y="21" width="4" height="4" fill="#ff9900" />
+                  <rect x="14" y="21" width="4" height="4" fill="#ff9900" />
+                  <rect x="18" y="21" width="4" height="4" fill="#ff9900" />
+                  <rect x="14" y="25" width="4" height="4" fill="#ff9900" />
                   <rect x="4" y="4" width="24" height="1" fill="rgba(255,255,255,0.2)" />
                   <rect x="4" y="4" width="1" height="24" fill="rgba(255,255,255,0.2)" />
                 </svg>
@@ -525,7 +524,7 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-      <p>acnologia // <span id="footer-year">2026</span> // no analytics, no cookies, no bullshit</p>
+      <p>aryaan yadav // <span id="footer-year">2026</span> // no analytics, no cookies, no unnecessary extras.</p>
       <p style="margin-top:4px;" id="footer-tagline">hand-coded with ♥ // best experienced at 3am</p>
       <!-- Hidden admin link — not linked anywhere visible -->
       <a href="admin/" style="opacity:0;font-size:1px;pointer-events:none;" tabindex="-1" aria-hidden="true">.</a>
@@ -536,7 +535,7 @@
   <div id="music-player">
     <div class="player-title-bar" id="player-drag-handle">
       <span class="player-icon">🎵</span>
-      <span>ACNOLOGIA.PLAYER</span>
+      <span>WINAMP.EXE</span>
       <div class="player-win-btns">
         <button id="player-min-btn" title="Minimize">_</button>
         <button id="player-close-btn" title="Hide">×</button>
@@ -548,6 +547,8 @@
         <div class="np-track" id="np-track">—</div>
         <div class="np-artist" id="np-artist">—</div>
       </div>
+
+      <div class="winamp-eq" id="winamp-eq"></div>
 
       <div class="progress-container">
         <input type="range" class="progress-bar" id="progress-bar" min="0" max="100" value="0" />
@@ -587,13 +588,4 @@
   </script>
 </body>
 
-
 </html>
-
-
-
-
-
-
-
-
