@@ -2091,35 +2091,64 @@ body.matrix-mode {
 
 /* ═══════════════════════════════════════════════════════
    ANIME.JS — Initial states for animated elements
-   Applied only when .anm-ready on body (prevents FOUC)
+   Applied via html.anm-ready (set in <head> before paint)
+   so elements start hidden and only appear through
+   anime.js entrance animations — no flash/reload effect
    ═══════════════════════════════════════════════════════ */
 
-/* Elements start invisible/offset — anime.js animates them in */
-body.anm-ready .anm-fade {
+/* ── Core animated elements — hidden before entrance ── */
+html.anm-ready .status-bar,
+html.anm-ready .ascii-art,
+html.anm-ready .header-subtitle,
+html.anm-ready .nav-tab,
+html.anm-ready .profile-avatar,
+html.anm-ready #music-player,
+html.anm-ready .desktop-icon {
   opacity: 0;
 }
 
-body.anm-ready .anm-slide-up {
+html.anm-ready .tab-panel.active .window {
+  opacity: 0;
+}
+
+html.anm-ready .tag {
+  opacity: 0;
+}
+
+html.anm-ready .badge {
+  opacity: 0;
+}
+
+html.anm-ready .digit {
+  opacity: 0;
+}
+
+/* ── Utility classes for dynamically-applied animations ── */
+html.anm-ready .anm-fade {
+  opacity: 0;
+}
+
+html.anm-ready .anm-slide-up {
   opacity: 0;
   transform: translateY(30px);
 }
 
-body.anm-ready .anm-slide-left {
+html.anm-ready .anm-slide-left {
   opacity: 0;
   transform: translateX(-30px);
 }
 
-body.anm-ready .anm-slide-right {
+html.anm-ready .anm-slide-right {
   opacity: 0;
   transform: translateX(30px);
 }
 
-body.anm-ready .anm-scale-in {
+html.anm-ready .anm-scale-in {
   opacity: 0;
   transform: scale(0.85);
 }
 
-body.anm-ready .anm-glitch-in {
+html.anm-ready .anm-glitch-in {
   opacity: 0;
   filter: blur(4px);
   transform: skewX(-5deg);
@@ -2131,7 +2160,13 @@ body.anm-ready .anm-glitch-in {
 }
 
 /* Stagger children in grids */
-body.anm-ready .anm-stagger-child {
+html.anm-ready .anm-stagger-child {
   opacity: 0;
   transform: translateY(16px);
+}
+
+/* Loading screen is ALWAYS visible regardless of anm-ready */
+html.anm-ready #loading-screen,
+html.anm-ready #loading-screen * {
+  opacity: 1 !important;
 }
