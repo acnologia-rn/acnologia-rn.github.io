@@ -819,14 +819,12 @@ function initDesktopIcons() {
    ═══════════════════════════════════════════════════════ */
 
 function initAnimeAnimations() {
-  // Guard: if anime.js didn't load, bail silently
+  // Guard: if anime.js didn't load, remove hidden states and bail
   if (typeof anime === 'undefined') {
-    console.warn('anime.js not loaded — skipping animations');
+    console.warn('anime.js not loaded — removing hidden states');
+    document.documentElement.classList.remove('anm-ready');
     return;
   }
-
-  // Signal CSS that animation initial states should apply
-  document.body.classList.add('anm-ready');
 
   // ── Utility: animate elements on scroll ────────────
   const scrollObserver = new IntersectionObserver((entries) => {
@@ -1298,7 +1296,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initDesktopIcons();
   initEasterEggs();
 
-  // ── Anime.js animations — after everything is rendered ──
-  // Slight delay so the loading screen finishes first
-  setTimeout(initAnimeAnimations, 600);
+  // ── Anime.js animations — run immediately ──
+  // Elements are already hidden via CSS (html.anm-ready set in <head>)
+  // so no flash occurs — the loading screen covers the initial state
+  initAnimeAnimations();
 });
