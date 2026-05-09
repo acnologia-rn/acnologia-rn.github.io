@@ -611,7 +611,7 @@ function initLoadingScreen() {
     if (msgEl) msgEl.textContent = 'READY.';
     screen.style.transition = 'opacity 0.5s ease';
     screen.style.opacity = '0';
-    setTimeout(() => { screen.style.display = 'none'; }, 550);
+    setTimeout(() => { screen.style.display = 'none'; }, 600);
   }
 
   let pct = 0;
